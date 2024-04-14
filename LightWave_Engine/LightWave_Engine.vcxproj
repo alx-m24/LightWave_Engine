@@ -157,8 +157,8 @@
     <None Include="src\Headers\Shaders\src\LightEnvironment.vert" />
     <None Include="src\Headers\Shaders\src\lightCube.frag" />
     <None Include="src\Headers\Shaders\src\lightCube.vert" />
-    <None Include="src\Headers\Shaders\src\plant.frag" />
-    <None Include="src\Headers\Shaders\src\plant.vert" />
+    <None Include="src\Headers\Shaders\src\transparent.frag" />
+    <None Include="src\Headers\Shaders\src\transparent.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\Headers\Textures\src\container2.png" />

@@ -143,7 +143,7 @@ void GUI::lightingOptions()
 	std::string name = "PointLights: " + std::to_string(lightingCubes->size());
 	if (ImGui::CollapsingHeader(name.c_str())) {
 		unsigned int i = 1;
-		for (LightCube* cube : *lightingCubes) {
+		for (Object* cube : *lightingCubes) {
 			name = "LighingCube" + std::to_string(i);
 
 			ImGui::SeparatorText(name.c_str());

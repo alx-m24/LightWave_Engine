@@ -37,7 +37,7 @@ public:
 	std::vector<Object*>* plants = nullptr;
 	std::vector<Object*>* windows = nullptr;
 	std::vector<Model*>* models = nullptr;
-	std::vector<LightCube*>* lightingCubes = nullptr;
+	LighCubes* lightingCubes = nullptr;
 	float* lightdirection = nullptr;
 	float* dirColor = nullptr;
 	float* cameraPos = nullptr;

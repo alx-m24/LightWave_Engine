@@ -100,10 +100,10 @@
     <None Include="src\Headers\Shaders\src\LightEnvironment.vert">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="src\Headers\Shaders\src\plant.frag">
+    <None Include="src\Headers\Shaders\src\transparent.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="src\Headers\Shaders\src\plant.vert">
+    <None Include="src\Headers\Shaders\src\transparent.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

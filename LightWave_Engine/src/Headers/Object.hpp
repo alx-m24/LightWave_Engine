@@ -8,23 +8,23 @@
 #include "Shaders/Shader.hpp"
 
 class Object {
-private:
-	unsigned int VAO;
-	unsigned int diffuse, specular;
-
 public:
 	float shininess = 64.0f;
 	glm::vec3 position = glm::vec3(0.0f);
 	glm::vec3 rotation = glm::vec3(0.0f);
 	glm::vec3 scale = glm::vec3(1.0f);
 	glm::mat4 model = glm::mat4(1.0f);
+	glm::vec3 color = glm::vec3(0.0f);
 
 private:
 	void updateTransforms();
 
 public:
-	Object(std::vector<float>& vertices, unsigned int diffuse, unsigned int specular);
-	Object(unsigned int VAO, unsigned int diffuse, unsigned int specular);
+	Object() = default;
+	Object(glm::vec3 position) : position(position) {};
+	Object(glm::vec3 position, glm::vec3 rotation) : position(position), rotation(rotation) {};
+	Object(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale) : position(position), rotation(rotation), scale(scale) {};
+	Object(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, float shininess) : position(position), rotation(rotation), scale(scale), shininess(shininess) {};
 
 	void update(Shader* shader);
 
@@ -37,12 +37,43 @@ public:
 	glm::vec3 getScale();
 };
 
-class LightCube : public Object {
-public:
-	glm::vec3 color = glm::vec3(1.0f);
+class Objects : public std::vector<Object*> {
+private:
+	unsigned int VAO;
+	unsigned int diffuse, specular;
+	unsigned int vertexCount;
 
 public:
-	LightCube(unsigned int VAO) : Object(VAO, NULL, NULL) {};
+	Objects(unsigned int VAO, unsigned int vertexCount, unsigned int diffuse, unsigned int specular);
+
+public:
+	void draw(Shader* shader);
 };
 
+class LightCube : public Object {
+public:
+	LightCube() = default;
+	LightCube(glm::vec3 color) {
+		this->color = color;
+	};
+};
+
+class LighCubes : public Objects {
+public:
+	LighCubes(unsigned int VAO) : Objects(VAO, 36, NULL, NULL) {};
+};
+
+class Transparent : public Object {
+public:
+	unsigned int VAO;
+	unsigned int diffuse, specular;
+	unsigned int vertexCount;
+
+public:
+	Transparent(unsigned int VAO, unsigned int vertexCount, unsigned int diffuse, unsigned int specular) : VAO(VAO), vertexCount(vertexCount), diffuse(diffuse), specular(specular) {};
+
+public:
+	void draw(Shader* shader);
+};
+ 
 #endif // !CUBE_HPP
