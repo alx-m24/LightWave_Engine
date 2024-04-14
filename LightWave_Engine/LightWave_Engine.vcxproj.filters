@@ -16,11 +16,14 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{a1ec7c3e-fde7-4249-b92d-96db8abc05df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{4f325b29-3ff8-42da-9aec-105ec91bef7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Textures">
+      <UniqueIdentifier>{c1969e42-fdaa-41f6-849a-63aaf80a7460}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Headers\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Headers\Shaders\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -54,11 +57,11 @@
     <ClCompile Include="src\Headers\Useful.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Headers\Camera\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Headers\Camera.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Headers\Shaders\Shader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -80,9 +83,6 @@
     <ClInclude Include="src\Headers\imgui\imgui_impl_opengl3.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="src\Headers\imgui\imgui_impl_opengl3_loader.h">
-      <Filter>imgui</Filter>
-    </ClInclude>
     <ClInclude Include="src\Headers\gui.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -92,30 +92,51 @@
     <ClInclude Include="src\Headers\Useful.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Headers\Camera\Camera.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Headers\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\Headers\Shaders\src\lightCube.frag">
-      <Filter>Resource Files</Filter>
+    <None Include="res\Shaders\lightCube.frag">
+      <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="src\Headers\Shaders\src\lightCube.vert">
-      <Filter>Resource Files</Filter>
+    <None Include="res\Shaders\lightCube.vert">
+      <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="src\Headers\Shaders\src\LightEnvironment.frag">
-      <Filter>Resource Files</Filter>
+    <None Include="res\Shaders\LightEnvironment.frag">
+      <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="src\Headers\Shaders\src\LightEnvironment.vert">
-      <Filter>Resource Files</Filter>
+    <None Include="res\Shaders\LightEnvironment.vert">
+      <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="src\Headers\Shaders\src\transparent.frag">
-      <Filter>Resource Files</Filter>
+    <None Include="res\Shaders\transparent.frag">
+      <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="src\Headers\Shaders\src\transparent.vert">
-      <Filter>Resource Files</Filter>
+    <None Include="res\Shaders\transparent.vert">
+      <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="src\Headers\Textures\src\container2.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="res\Textures\blending_transparent_window.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="res\Textures\container2.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="res\Textures\container2_specular.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="res\Textures\grass.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="res\Textures\lighting_maps_specular_color.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="res\Textures\matrix.jpg">
+      <Filter>Resource Files\Textures</Filter>
     </Image>
   </ItemGroup>
 </Project>

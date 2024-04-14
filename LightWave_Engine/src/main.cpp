@@ -11,7 +11,7 @@
 #include <vector>
 // My headers
 #include "Headers/Shaders/Shader.hpp"
-#include "Headers/Camera.hpp"
+#include "Headers/Camera/Camera.hpp"
 #include "Headers/Textures/Textures.hpp"
 #include "Headers/Model.hpp"
 #include "Headers/Object.hpp"
@@ -45,15 +45,15 @@ int main() {
 	GLFWwindow* window = setup();
 
 	// Shaders
-	Shader lightCube("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\src\\Headers\\Shaders\\src\\lightCube.vert", "C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\src\\Headers\\Shaders\\src\\lightCube.frag");
-	Shader lightingShader("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\src\\Headers\\Shaders\\src\\LightEnvironment.vert", "C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\src\\Headers\\Shaders\\src\\LightEnvironment.frag");
-	Shader transparentShader("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\src\\Headers\\Shaders\\src\\transparent.vert", "C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\src\\Headers\\Shaders\\src\\transparent.frag");
+	Shader lightCube("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Shaders\\lightCube.vert", "C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Shaders\\lightCube.frag");
+	Shader lightingShader("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Shaders\\LightEnvironment.vert", "C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Shaders\\LightEnvironment.frag");
+	Shader transparentShader("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Shaders\\transparent.vert", "C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Shaders\\transparent.frag");
 
 	// Textures
-	unsigned int containerDiffuse = loadTexture("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\src\\Headers\\Textures\\src\\container2.png");
-	unsigned int containerSpecular = loadTexture("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\src\\Headers\\Textures\\src\\container2_specular.png");
-	unsigned int grass = loadTexture("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\src\\Headers\\Textures\\src\\grass.png");
-	unsigned int windowTex = loadTexture("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\src\\Headers\\Textures\\src\\blending_transparent_window.png");
+	unsigned int containerDiffuse = loadTexture("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Textures\\container2.png");
+	unsigned int containerSpecular = loadTexture("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Textures\\container2_specular.png");
+	unsigned int grass = loadTexture("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Textures\\grass.png");
+	unsigned int windowTex = loadTexture("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Textures\\blending_transparent_window.png");
 
 	float CubeVertices[] = {
 		// Position				// Normal				// TexCoords
@@ -222,7 +222,7 @@ int main() {
 	std::vector<Model*> models;
 
 	{
-		Model* backbag = new Model("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\src\\Headers\\Models\\BackBag\\backpack.obj");
+		Model* backbag = new Model("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Models\\BackBag\\backpack.obj");
 
 		backbag->position = glm::vec3(-1, 0.5, -3.5);
 		backbag->scale = glm::vec3(0.2f, 0.2f, 0.2f);
@@ -232,7 +232,7 @@ int main() {
 	}
 
 	{
-		Model* table = new Model("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\src\\Headers\\Models\\Table\\source\\SIMPLE ROUND TABLE.obj");
+		Model* table = new Model("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Models\\Table\\source\\SIMPLE ROUND TABLE.obj");
 
 		table->position = glm::vec3(0.0f, 0.0f, -1.5f);
 		table->shininess = 16.0f;

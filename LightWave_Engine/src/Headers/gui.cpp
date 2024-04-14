@@ -170,14 +170,18 @@ void GUI::cameraOptions()
 	ImGui::BeginGroup();
 
 	ImGui::DragFloat3("Position", &camera->Position.x, 0.01f);
+
 	ImGui::DragFloat3("Rotation", &camera->Front.x, 0.01f);
 	if (camera->Front.y < -1.0f) camera->Front.y = -1.0f;
 	if (camera->Front.y > 1.0f) camera->Front.y = 1.0f;
+
 	ImGui::DragFloat("Speed", &camera->MovementSpeed, 0.01f, 0.5f, 50.0f);
+	ImGui::SliderFloat("Sensitivity", &camera->MouseSensitivity, 0.0001f, 1.0f);
 	ImGui::SliderFloat("FOV", &camera->Zoom, 1.0f, 180.0f);
 
 	if (ImGui::Button("Reset")) {
 		camera->Zoom = 45.0f;
+		camera->MouseSensitivity = 0.2f;
 		camera->MovementSpeed = 2.5f;
 	}
 
@@ -213,7 +217,8 @@ GUI::GUI(GLFWwindow* window)
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
-	ImGui::StyleColorsDark();
+	ImGui::StyleColorsDark(); 
+ 
 
 	// Setup Platform/Renderer backends
 	ImGui_ImplGlfw_InitForOpenGL(window, true);

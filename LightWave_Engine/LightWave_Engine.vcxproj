@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Headers\Camera.cpp" />
+    <ClCompile Include="src\Headers\Camera\Camera.cpp" />
     <ClCompile Include="src\Headers\Object.cpp" />
     <ClCompile Include="src\Headers\gui.cpp" />
     <ClCompile Include="src\Headers\imgui\imgui_impl_glfw.cpp" />
@@ -141,12 +141,12 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Headers\Camera.hpp" />
+    <ClInclude Include="src\Headers\Camera\Camera.hpp" />
+    <ClInclude Include="src\Headers\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\Headers\Object.hpp" />
     <ClInclude Include="src\Headers\gui.hpp" />
     <ClInclude Include="src\Headers\imgui\imgui_impl_glfw.h" />
     <ClInclude Include="src\Headers\imgui\imgui_impl_opengl3.h" />
-    <ClInclude Include="src\Headers\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\Headers\Mesh.hpp" />
     <ClInclude Include="src\Headers\Mesh\Vertex\Vertex.hpp" />
     <ClInclude Include="src\Headers\Model.hpp" />
@@ -155,15 +155,20 @@
     <ClInclude Include="src\Headers\Useful.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\Headers\Shaders\src\LightEnvironment.frag" />
-    <None Include="src\Headers\Shaders\src\LightEnvironment.vert" />
-    <None Include="src\Headers\Shaders\src\lightCube.frag" />
-    <None Include="src\Headers\Shaders\src\lightCube.vert" />
-    <None Include="src\Headers\Shaders\src\transparent.frag" />
-    <None Include="src\Headers\Shaders\src\transparent.vert" />
+    <None Include="res\Shaders\lightCube.frag" />
+    <None Include="res\Shaders\lightCube.vert" />
+    <None Include="res\Shaders\LightEnvironment.frag" />
+    <None Include="res\Shaders\LightEnvironment.vert" />
+    <None Include="res\Shaders\transparent.frag" />
+    <None Include="res\Shaders\transparent.vert" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="src\Headers\Textures\src\container2.png" />
+    <Image Include="res\Textures\blending_transparent_window.png" />
+    <Image Include="res\Textures\container2.png" />
+    <Image Include="res\Textures\container2_specular.png" />
+    <Image Include="res\Textures\grass.png" />
+    <Image Include="res\Textures\lighting_maps_specular_color.png" />
+    <Image Include="res\Textures\matrix.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

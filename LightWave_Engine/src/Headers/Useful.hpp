@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <stb_image.h>
 #include <iostream>
-#include "Camera.hpp"
+#include "Camera/Camera.hpp"
 
 extern Camera* camera;
 extern unsigned int SCR_WIDTH;
