@@ -124,7 +124,7 @@ void GUI::visualsWindow()
 	if (lightingMenu) lightingOptions();
 	if (cameraMenu) cameraOptions();
 
-	ImGui::SetWindowPos(ImVec2(*width - (ImGui::GetWindowSize().x), 0));
+	ImGui::SetWindowPos(ImVec2(SCR_WIDTH - (ImGui::GetWindowSize().x), 0));
 	ImGui::End();
 }
 
@@ -169,16 +169,16 @@ void GUI::cameraOptions()
 
 	ImGui::BeginGroup();
 
-	ImGui::DragFloat3("Position", cameraPos, 0.01f);
-	ImGui::DragFloat3("Rotation", cameraRotation, 0.01f);
-	if (cameraRotation[1] < -1.0f) cameraRotation[1] = -1.0f;
-	if (cameraRotation[1] > 1.0f) cameraRotation[1] = 1.0f;
-	ImGui::DragFloat("Speed", speed, 0.01f, 0.5f, 50.0f);
-	ImGui::SliderFloat("FOV", fov, 1.0f, 180.0f);
+	ImGui::DragFloat3("Position", &camera->Position.x, 0.01f);
+	ImGui::DragFloat3("Rotation", &camera->Front.x, 0.01f);
+	if (camera->Front.y < -1.0f) camera->Front.y = -1.0f;
+	if (camera->Front.y > 1.0f) camera->Front.y = 1.0f;
+	ImGui::DragFloat("Speed", &camera->MovementSpeed, 0.01f, 0.5f, 50.0f);
+	ImGui::SliderFloat("FOV", &camera->Zoom, 1.0f, 180.0f);
 
 	if (ImGui::Button("Reset")) {
-		*fov = 45.0f;
-		*speed = 2.5f;
+		camera->Zoom = 45.0f;
+		camera->MovementSpeed = 2.5f;
 	}
 
 	ImGui::EndGroup();
@@ -203,11 +203,11 @@ void GUI::cameraLocked()
 {
 	ImGui::Begin("Camera Locked", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove);
 	ImGui::Text("The camera is locked. Press 'escape' to unlock it.");
-	ImGui::SetWindowPos(ImVec2(*width / 2.0f - (ImGui::GetWindowSize().x / 2.0f), *height - 100.0f));
+	ImGui::SetWindowPos(ImVec2(SCR_WIDTH / 2.0f - (ImGui::GetWindowSize().x / 2.0f), SCR_HEIGHT - 100.0f));
 	ImGui::End();
 }
 
-GUI::GUI(unsigned int* width, unsigned int* height, GLFWwindow* window) : width(width), height(height)
+GUI::GUI(GLFWwindow* window)
 {
 	io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
@@ -235,8 +235,8 @@ void GUI::update()
 		ImGui::ShowDemoWindow(&show_demo_window);
 	}
 
-	if (ImGui::IsKeyPressed(ImGuiKey_Escape, false)) moveCam = !moveCam;
-	if (!moveCam) {
+	if (ImGui::IsKeyPressed(ImGuiKey_Escape, false)) camMove = !camMove;
+	if (!camMove) {
 		cameraLocked();
 	}
 }

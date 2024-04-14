@@ -45,6 +45,7 @@ private:
 
 public:
 	Objects(unsigned int VAO, unsigned int vertexCount, unsigned int diffuse, unsigned int specular);
+	~Objects();
 
 public:
 	void draw(Shader* shader);
@@ -75,5 +76,5 @@ public:
 public:
 	void draw(Shader* shader);
 };
- 
+
 #endif // !CUBE_HPP

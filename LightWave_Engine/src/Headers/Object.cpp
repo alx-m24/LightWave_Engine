@@ -54,6 +54,11 @@ glm::vec3 Object::getScale()
 
 Objects::Objects(unsigned int VAO, unsigned int vertexCount, unsigned int diffuse, unsigned int specular) : VAO(VAO), vertexCount(vertexCount), diffuse(diffuse), specular(specular) {};
 
+Objects::~Objects()
+{
+	for (Object* object : *this) delete object;
+}
+
 void Objects::draw(Shader* shader)
 {
 	if (diffuse != NULL) {

@@ -137,6 +137,7 @@
     <ClCompile Include="src\Headers\Model.cpp" />
     <ClCompile Include="src\Headers\Shaders\Shader.cpp" />
     <ClCompile Include="src\Headers\Textures\Textures.cpp" />
+    <ClCompile Include="src\Headers\Useful.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +152,7 @@
     <ClInclude Include="src\Headers\Model.hpp" />
     <ClInclude Include="src\Headers\Shaders\Shader.hpp" />
     <ClInclude Include="src\Headers\Textures\Textures.hpp" />
+    <ClInclude Include="src\Headers\Useful.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Headers\Shaders\src\LightEnvironment.frag" />

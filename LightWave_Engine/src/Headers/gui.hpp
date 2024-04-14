@@ -8,11 +8,9 @@
 #include <iostream>
 #include "Object.hpp"
 #include "Model.hpp"
+#include "Useful.hpp"
 
 class GUI {
-private:
-	unsigned int* width = nullptr;
-	unsigned int* height = nullptr;
 	ImGuiIO& io = ImGui::GetIO();
 
 private:
@@ -29,10 +27,6 @@ private:
 	void cameraLocked();
 
 public:
-	bool moveCam = true;
-	bool lastmoveCam = true;
-
-public:
 	std::vector<Object*>* cubes = nullptr;
 	std::vector<Object*>* plants = nullptr;
 	std::vector<Object*>* windows = nullptr;
@@ -40,13 +34,9 @@ public:
 	LighCubes* lightingCubes = nullptr;
 	float* lightdirection = nullptr;
 	float* dirColor = nullptr;
-	float* cameraPos = nullptr;
-	float* cameraRotation = nullptr;
-	float* speed = nullptr;
-	float* fov = nullptr;
 
 public:
-	GUI(unsigned int* width, unsigned int* height, GLFWwindow* window);
+	GUI(GLFWwindow* window);
 
 public:
 	void update();
