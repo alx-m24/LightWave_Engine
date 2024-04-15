@@ -6,6 +6,10 @@ void GUI::objectsWindow()
 
 	std::string name = "Cubes: " + std::to_string(cubes.size());
 	if (ImGui::CollapsingHeader(name.c_str())) {
+		if (ImGui::Button("Add Cube")) {
+			cubes.emplace_back(Object(glm::vec3(0.0f)));
+		}
+
 		unsigned int i = 1;
 		for (Object& cube : cubes) {
 			name = "Cube" + std::to_string(i);
@@ -106,31 +110,129 @@ void GUI::visualsWindow()
 
 void GUI::lightingOptions()
 {
-	ImGui::SeparatorText("Directional");
-	ImGui::BeginChild("Directional", ImVec2(250, 50));
-	ImGui::BeginGroup();
-
-	ImGui::DragFloat3("Direction", lightdirection, 0.01f);
-	ImGui::ColorEdit3("Color", dirColor, 0.01f);
-
-	ImGui::EndGroup();
-	ImGui::EndChild();
-
-	std::string name = "PointLights: " + std::to_string(lightingCubes.size());
+	std::string name = "DirectionalLights: " + std::to_string(lightingSystem.directionalLights.size());
 	if (ImGui::CollapsingHeader(name.c_str())) {
+		if (ImGui::Button("Add DirectionalLight")) addDirectionalLight = true;
+
+		if (addDirectionalLight) {
+			static glm::vec3 color(1.0f);
+			ImGui::Begin("Add DirectionalLight");
+
+			ImGui::ColorPicker3("Color", &color.x);
+			if (ImGui::Button("Done")) {
+				lightingSystem.addDirectionalLight(glm::vec3(0.0f, -1.0f, 0.0f), color);
+				addDirectionalLight = false;
+			}
+
+			ImGui::End();
+		}
+
 		unsigned int i = 1;
-		for (Object& cube : lightingCubes) {
-			name = "LighingCube" + std::to_string(i);
+		for (DirectionalLight& light : lightingSystem.directionalLights) {
+			name = "Directional" + std::to_string(i);
 
 			ImGui::SeparatorText(name.c_str());
 
-			ImGui::BeginChild(name.c_str(), ImVec2(250, 90));
+			ImGui::BeginChild(name.c_str(), ImVec2(250, 130));
 
 			ImGui::BeginGroup();
 
-			ImGui::DragFloat3("Position", &cube.position.x, 0.01f);
-			ImGui::DragFloat3("Scale", &cube.scale.x, 0.01f);
-			ImGui::ColorEdit3("Color", &cube.color.x, 0.01f);
+			ImGui::DragFloat3("Direction", &light.direction.x, 0.01f);
+
+			ImGui::ColorEdit3("Ambient", &light.ambient.x, 0.01f);
+			ImGui::ColorEdit3("Diffuse", &light.diffuse.x, 0.01f);
+			ImGui::ColorEdit3("Specular", &light.specular.x, 0.01f);
+
+			ImGui::ColorEdit3("Color", &light.color.x, 0.01f);
+
+			ImGui::EndGroup();
+			ImGui::EndChild();
+			++i;
+		}
+	}
+
+	name = "PointLights: " + std::to_string(lightingSystem.pointlights.size());
+	if (ImGui::CollapsingHeader(name.c_str())) {
+		if (ImGui::Button("Add PointLight")) addPointLight = true;
+
+		if (addPointLight) {
+			static glm::vec3 color(1.0f);
+			ImGui::Begin("Add PointLight");
+
+			ImGui::ColorPicker3("Color", &color.x);
+			if (ImGui::Button("Done")) {
+				lightingSystem.addPointLight(glm::vec3(0.0f), color);
+				addPointLight = false;
+			}
+
+			ImGui::End();
+		}
+
+		unsigned int i = 1;
+		for (PointLight& light : lightingSystem.pointlights) {
+			name = "PointLight" + std::to_string(i);
+
+			ImGui::SeparatorText(name.c_str());
+
+			ImGui::BeginChild(name.c_str(), ImVec2(250, 140));
+
+			ImGui::BeginGroup();
+
+			ImGui::DragFloat3("Position", &light.position.x, 0.01f);
+			ImGui::DragFloat3("Scale", &light.scale.x, 0.01f);
+
+			ImGui::ColorEdit3("Ambient", &light.ambient.x, 0.01f);
+			ImGui::ColorEdit3("Diffuse", &light.diffuse.x, 0.01f);
+			ImGui::ColorEdit3("Specular", &light.specular.x, 0.01f);
+
+			ImGui::ColorEdit3("Color", &light.color.x, 0.01f);
+
+			ImGui::EndGroup();
+			ImGui::EndChild();
+			++i;
+		}
+	}
+
+	name = "SpotLights: " + std::to_string(lightingSystem.spotLights.size());
+	if (ImGui::CollapsingHeader(name.c_str())) {
+		if (ImGui::Button("Add SpotLight")) addSpotLight = true;
+
+		if (addSpotLight) {
+			static glm::vec3 color(1.0f);
+			static bool flashLight = false;
+
+			ImGui::Begin("Add SpotLight");
+
+			ImGui::ColorPicker3("Color", &color.x);
+			ImGui::Checkbox("Flash Light", &flashLight);
+			if (ImGui::Button("Done")) {
+				lightingSystem.addSpotLight(flashLight, glm::vec3(0.0f), glm::vec3(0.0f, -1.0f, 0.0f), color);
+				addSpotLight = false;
+			}
+
+			ImGui::End();
+		}
+
+		unsigned int i = 1;
+		for (SpotLight& light : lightingSystem.spotLights) {
+			name = "SpotLight" + std::to_string(i);
+
+			ImGui::SeparatorText(name.c_str());
+
+			ImGui::BeginChild(name.c_str(), ImVec2(250, 160));
+
+			ImGui::BeginGroup();
+
+			ImGui::DragFloat3("Position", &light.pos.x, 0.01f);
+			ImGui::DragFloat3("Direction", &light.dir.x, 0.01f);
+
+			ImGui::ColorEdit3("Ambient", &light.ambient.x, 0.01f);
+			ImGui::ColorEdit3("Diffuse", &light.diffuse.x, 0.01f);
+			ImGui::ColorEdit3("Specular", &light.specular.x, 0.01f);
+
+			ImGui::ColorEdit3("Color", &light.color.x, 0.01f);
+
+			ImGui::Checkbox("FlashLight", &light.flashLight);
 
 			ImGui::EndGroup();
 			ImGui::EndChild();
@@ -187,7 +289,7 @@ void GUI::cameraLocked()
 	ImGui::End();
 }
 
-GUI::GUI(GLFWwindow* window, Objects& cubes, std::vector<Transparent*>& transparent, std::vector<Model>& models, LighCubes& lightingCubes) : cubes(cubes), transparent(transparent), models(models), lightingCubes(lightingCubes)
+GUI::GUI(GLFWwindow* window, Objects& cubes, std::vector<Transparent*>& transparent, std::vector<Model>& models, LightSystem& lightingSystem) : cubes(cubes), transparent(transparent), models(models), lightingSystem(lightingSystem)
 {
 	io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls

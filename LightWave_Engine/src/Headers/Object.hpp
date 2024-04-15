@@ -59,12 +59,6 @@ public:
 		this->color = color;
 	};
 };
-
-class LighCubes : public Objects {
-public:
-	LighCubes(unsigned int VAO) : Objects(VAO, 36, NULL, NULL) {};
-};
-
 class Transparent : public Object {
 public:
 	unsigned int VAO;

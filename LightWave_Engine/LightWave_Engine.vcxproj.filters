@@ -22,6 +22,12 @@
     <Filter Include="Resource Files\Textures">
       <UniqueIdentifier>{c1969e42-fdaa-41f6-849a-63aaf80a7460}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{4e6b3aae-db5c-481d-bfd7-7d2ce84628ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models">
+      <UniqueIdentifier>{9b8f60c9-dbce-4100-b290-83d1f61d99bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Headers\Shaders\Shader.cpp">
@@ -31,15 +37,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Headers\Textures\Textures.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Headers\Mesh\Vertex\Vertex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Headers\Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Headers\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Headers\imgui\imgui_impl_glfw.cpp">
@@ -60,21 +57,24 @@
     <ClCompile Include="src\Headers\Camera\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Headers\Model.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Headers\Mesh.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Headers\Mesh\Vertex\Vertex.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Headers\LightSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Headers\Shaders\Shader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Headers\Textures\Textures.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Headers\Mesh\Vertex\Vertex.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Headers\Mesh.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Headers\Model.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Headers\imgui\imgui_impl_glfw.h">
@@ -97,6 +97,18 @@
     </ClInclude>
     <ClInclude Include="src\Headers\imgui\imgui_impl_opengl3_loader.h">
       <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Headers\Model.hpp">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Headers\Mesh.hpp">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Headers\Mesh\Vertex\Vertex.hpp">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Headers\LightSystem.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,7 @@
 #include "Object.hpp"
 #include "Model.hpp"
 #include "Useful.hpp"
+#include "LightSystem.hpp"
 
 class GUI {
 	ImGuiIO& io = ImGui::GetIO();
@@ -17,6 +18,9 @@ private:
 	bool show_demo_window = false;
 	bool lightingMenu = true;
 	bool cameraMenu = false;
+	bool addPointLight = false;
+	bool addDirectionalLight = false;
+	bool addSpotLight = false;
 
 private:
 	void objectsWindow();
@@ -28,18 +32,16 @@ private:
 
 public:
 	Objects& cubes;
+	LightSystem& lightingSystem;
 	std::vector<Model>& models;
-	LighCubes& lightingCubes;
 	std::vector<Transparent*>& transparent;
-	float* lightdirection = nullptr;
-	float* dirColor = nullptr;
 
 public:
 	GUI(GLFWwindow* window, 
 		Objects& cubes, 
 		std::vector<Transparent*>& transparent,
 		std::vector<Model>& models,
-		LighCubes& lightingCubes);
+		LightSystem& lightingSystem);
 
 public:
 	void update();

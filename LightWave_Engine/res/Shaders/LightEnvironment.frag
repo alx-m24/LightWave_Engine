@@ -13,8 +13,6 @@ struct DirLight {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
-
-    vec3 color;
 };
 
 struct PointLight {
@@ -23,8 +21,6 @@ struct PointLight {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
-
-     vec3 color;
 	
     float constant;
     float linear;
@@ -43,9 +39,7 @@ struct SpotLight {
   
     vec3 ambient;
     vec3 diffuse;
-    vec3 specular;  
-    
-     vec3 color;
+    vec3 specular;
 };
 
 in vec3 FragPos;  
@@ -53,19 +47,22 @@ in vec3 Normal;
 in vec2 TexCoords;
   
 uniform vec3 viewPos;
-uniform bool spot;
 uniform Material material;
 
-uniform DirLight dirLight;
-#define NR_POINT_LIGHTS 4
-uniform PointLight pointLights[NR_POINT_LIGHTS];
-uniform SpotLight spotLight;
+#define MAX_DIR_LIGHT 4
+uniform int dirLightNum;
+uniform DirLight dirLights[MAX_DIR_LIGHT];
 
-vec3 calculateDirLight(DirLight light, vec3 normal, vec3 viewDir) {
-    light.ambient *= light.color;
-    light.diffuse *= light.color;
-    light.specular *= light.color;
+#define MAX_POINT_LIGHTS 16
+uniform int pointLightNum;
+uniform PointLight pointLights[MAX_POINT_LIGHTS];
 
+#define MAX_SPOT_LIGHTS 4
+uniform int spotLightNum;
+uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
+
+vec3 calculateDirLight(DirLight light, vec3 normal, vec3 viewDir)
+{
     vec3 lightDir = normalize(-light.direction);
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);
@@ -79,10 +76,8 @@ vec3 calculateDirLight(DirLight light, vec3 normal, vec3 viewDir) {
     return (ambient + diffuse + specular);
 }
 
-vec3 calculatePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
-    light.ambient *= light.color;
-    light.diffuse *= light.color;
-    light.specular *= light.color;
+vec3 calculatePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir) 
+{
 
     vec3 lightDir = normalize(light.position - fragPos);
     // diffuse shading
@@ -105,10 +100,6 @@ vec3 calculatePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewD
 
 vec3 calculateSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
-    light.ambient *= light.color;
-    light.diffuse *= light.color;
-    light.specular *= light.color;
-
     vec3 lightDir = normalize(light.position - fragPos);
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);
@@ -140,12 +131,14 @@ void main()
 
     vec3 result = vec3(0.0f);
 
-    result += calculateDirLight(dirLight, norm, viewDir);
+    for (int i = 0; i < dirLightNum; ++i)
+        result += calculateDirLight(dirLights[i], norm, viewDir);
 
-    for(int i = 0; i < NR_POINT_LIGHTS; i++)
+    for(int i = 0; i < pointLightNum; i++)
         result += calculatePointLight(pointLights[i], norm, FragPos, viewDir);
 
-    result += (int(spot) * calculateSpotLight(spotLight, norm, FragPos, viewDir));
+    for(int i = 0; i < spotLightNum; i++)
+        result += calculateSpotLight(spotLights[i], norm, FragPos, viewDir);
     
     FragColor = vec4(result, 1.0);
 } 

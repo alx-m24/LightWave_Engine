@@ -76,6 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -104,6 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Headers\Camera\Camera.cpp" />
+    <ClCompile Include="src\Headers\LightSystem.cpp" />
     <ClCompile Include="src\Headers\Object.cpp" />
     <ClCompile Include="src\Headers\gui.cpp" />
     <ClCompile Include="src\Headers\imgui\imgui_impl_glfw.cpp" />
@@ -143,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="src\Headers\Camera\Camera.hpp" />
     <ClInclude Include="src\Headers\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="src\Headers\LightSystem.hpp" />
     <ClInclude Include="src\Headers\Object.hpp" />
     <ClInclude Include="src\Headers\gui.hpp" />
     <ClInclude Include="src\Headers\imgui\imgui_impl_glfw.h" />

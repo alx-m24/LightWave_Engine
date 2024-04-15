@@ -17,6 +17,7 @@
 #include "Headers/Object.hpp"
 #include "Headers/gui.hpp"
 #include "Headers/Useful.hpp"
+#include "Headers/LightSystem.hpp"
 
 // Paths
 const std::string SHADER_PATH = "C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Shaders\\";
@@ -213,16 +214,6 @@ int main() {
 		containers.emplace_back(Object(containerPositions[i], glm::vec3(1.0f, 0.3f, 0.5f) * float(i * 20)));
 	}
 
-	LighCubes lightCubes(lightVAO);
-	for (int i = 0; i < std::size(pointLightPositions); ++i) {
-		lightCubes.emplace_back(LightCube(lightColor[i]));
-
-		Object& cube = lightCubes.back();
-
-		cube.setPosition(pointLightPositions[i]);
-		cube.setScale(glm::vec3(0.2f, 0.2f, 0.2f));
-	}
-
 	// External 3d models
 	Models models;
 
@@ -241,20 +232,22 @@ int main() {
 	table.position = glm::vec3(0.0f, 0.0f, -1.5f);
 	table.shininess = 16.0f;
 
-	// The view matrix
-	glm::mat4 view = camera.GetViewMatrix();
-	// Light colors
-	glm::vec3 lightDir = glm::vec3(-0.2f, -1.0f, -0.3f);
-	glm::vec3 colorDir = glm::vec3(1.0f);
+	// Lighting
+	LightSystem lightsystem(lightingShader, cubeVAO);
+
+	lightsystem.addDirectionalLight();
+	lightsystem.addSpotLight(true);
+	for (int i = 0; i < std::size(pointLightPositions); ++i) {
+		lightsystem.addPointLight(pointLightPositions[i], lightColor[i]);
+	}
 
 	// Initializing UI
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	GUI gui(window, containers, transparents, models, lightCubes);
+	GUI gui(window, containers, transparents, models, lightsystem);
 
-	// Passing required pointers in UI
-	gui.lightdirection = &lightDir.x;
-	gui.dirColor = &colorDir.x;
+	// The view matrix
+	glm::mat4 view = camera.GetViewMatrix();
 
 	// Main loop
 	while (!glfwWindowShouldClose(window)) {
@@ -279,60 +272,18 @@ int main() {
 		lightingShader.setVec3("viewPos", camera.Position);
 		lightingShader.setMat4("view", view);
 		lightingShader.setMat4("projection", projection);
-
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) lightingShader.setBool("spot", true);
-		else lightingShader.setBool("spot", false);
-
-		// point lights
-		for (int i = 0; i < lightCubes.size(); ++i) {
-			const Object& cube = lightCubes[i];
-			std::string name = "pointLights[" + std::to_string(i) + "]";
-
-			lightingShader.setVec3(name + ".position", cube.position);
-			lightingShader.setVec3(name + ".ambient", 0.05f, 0.05f, 0.05f);
-			lightingShader.setVec3(name + ".diffuse", 0.8f, 0.8f, 0.8f);
-			lightingShader.setVec3(name + ".specular", 1.0f, 1.0f, 1.0f);
-			lightingShader.setFloat(name + ".constant", 1.0f);
-			lightingShader.setFloat(name + ".linear", 0.09f);
-			lightingShader.setFloat(name + ".quadratic", 0.032f);
-			lightingShader.setVec3(name + ".color", cube.color);
-		}
-
-		// Directional
-		{
-			lightingShader.setVec3("dirLight.direction", lightDir);
-			lightingShader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
-			lightingShader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
-			lightingShader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
-			lightingShader.setVec3("dirLight.color", colorDir);
-		}
-
-		// spotLight
-		{
-			lightingShader.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
-			lightingShader.setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-			lightingShader.setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
-			lightingShader.setFloat("spotLight.constant", 1.0f);
-			lightingShader.setFloat("spotLight.linear", 0.09f);
-			lightingShader.setFloat("spotLight.quadratic", 0.032f);
-			lightingShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-			lightingShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
-			lightingShader.setVec3("spotLight.color", lightColor[0]);
-			lightingShader.setVec3("spotLight.position", camera.Position);
-			lightingShader.setVec3("spotLight.direction", camera.Front);
-		}
+		lightsystem.update();
 
 		// Drawing containers
 		containers.draw(lightingShader);
 		// Drawing models
 		models.draw(lightingShader);
-		
+
 		// Light Cubes
 		lightCube.use();
 		lightCube.setMat4("view", view);
 		lightCube.setMat4("projection", projection);
-		// Drawing lightcubes
-		lightCubes.draw(lightCube);
+		lightsystem.draw(lightCube);
 
 		// Transparent objects
 		transparentShader.use();
