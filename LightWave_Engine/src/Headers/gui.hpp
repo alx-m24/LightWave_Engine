@@ -27,16 +27,19 @@ private:
 	void cameraLocked();
 
 public:
-	std::vector<Object*>* cubes = nullptr;
-	std::vector<Object*>* plants = nullptr;
-	std::vector<Object*>* windows = nullptr;
-	std::vector<Model*>* models = nullptr;
-	LighCubes* lightingCubes = nullptr;
+	Objects& cubes;
+	std::vector<Model>& models;
+	LighCubes& lightingCubes;
+	std::vector<Transparent*>& transparent;
 	float* lightdirection = nullptr;
 	float* dirColor = nullptr;
 
 public:
-	GUI(GLFWwindow* window);
+	GUI(GLFWwindow* window, 
+		Objects& cubes, 
+		std::vector<Transparent*>& transparent,
+		std::vector<Model>& models,
+		LighCubes& lightingCubes);
 
 public:
 	void update();

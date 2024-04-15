@@ -13,13 +13,13 @@ void Object::updateTransforms()
 	if (scale != glm::vec3(1.0f)) model = glm::scale(model, scale);
 }
 
-void Object::update(Shader* shader)
+void Object::update(Shader& shader)
 {
 	this->updateTransforms();
 
-	shader->setMat4("model", model);
-	shader->setVec3("color", this->color);
-	shader->setFloat("material.shininess", this->shininess);
+	shader.setMat4("model", model);
+	shader.setVec3("color", this->color);
+	shader.setFloat("material.shininess", this->shininess);
 }
 
 void Object::setPosition(glm::vec3 pos)
@@ -54,43 +54,38 @@ glm::vec3 Object::getScale()
 
 Objects::Objects(unsigned int VAO, unsigned int vertexCount, unsigned int diffuse, unsigned int specular) : VAO(VAO), vertexCount(vertexCount), diffuse(diffuse), specular(specular) {};
 
-Objects::~Objects()
-{
-	for (Object* object : *this) delete object;
-}
-
-void Objects::draw(Shader* shader)
+void Objects::draw(Shader& shader)
 {
 	if (diffuse != NULL) {
-		shader->setInt("material.diffuse", 0);
+		shader.setInt("material.diffuse", 0);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, diffuse);
 	}
 	if (specular != NULL) {
-		shader->setInt("material.specular", 1);
+		shader.setInt("material.specular", 1);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, specular);
 	}
 
 	glBindVertexArray(VAO);
-	for (Object* object : *this) {
-		object->update(shader);
+	for (Object& object : *this) {
+		object.update(shader);
 		glDrawArrays(GL_TRIANGLES, 0, vertexCount);
 	}
 	glBindVertexArray(0);
 }
 
-void Transparent::draw(Shader* shader)
+void Transparent::draw(Shader& shader)
 {
 	this->update(shader);
 
 	if (diffuse != NULL) {
-		shader->setInt("material.diffuse", 0);
+		shader.setInt("material.diffuse", 0);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, diffuse);
 	}
 	if (specular != NULL) {
-		shader->setInt("material.specular", 1);
+		shader.setInt("material.specular", 1);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, specular);
 	}

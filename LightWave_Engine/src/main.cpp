@@ -23,7 +23,7 @@ unsigned int SCR_WIDTH = 1000;
 unsigned int SCR_HEIGHT = 600;
 
 // camera
-Camera* camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera = Camera(glm::vec3(0.0f, 0.0f, 3.0f));
 double lastX = SCR_WIDTH / 2.0f;
 double lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -183,78 +183,63 @@ int main() {
 
 	std::vector<Transparent*> transparent;
 
-	Objects plants(planeVAO, 6, grass, NULL);
 	for (int i = 0; i < 4; ++i) {
 		Transparent* temp = new Transparent(planeVAO, 6, grass, NULL);
 
 		temp->position = grassPos[i];
-
-		plants.push_back(temp);
 		transparent.push_back(temp);
 	}
 
-	Objects windows(planeVAO, 6, windowTex, NULL);
 	for (int i = 0; i < 4; ++i) {
 		Transparent* temp = new Transparent(planeVAO, 6, windowTex, windowTex);
 
 		temp->position = grassPos[i] + glm::vec3(rand() % 5, rand() % 5, rand() % 5);
-
-		windows.push_back(temp);
 		transparent.push_back(temp);
 	}
 
 	Objects containers(cubeVAO, 36, containerDiffuse, containerSpecular);
 	for (int i = 0; i < std::size(containerPositions); ++i) {
-		Object* container = new Object(containerPositions[i], glm::vec3(1.0f, 0.3f, 0.5f) * float(i * 20));
-		containers.push_back(container);
+		containers.emplace_back(Object(containerPositions[i], glm::vec3(1.0f, 0.3f, 0.5f)* float(i * 20)));
 	}
 
 	LighCubes lightCubes(lightVAO);
 	for (int i = 0; i < std::size(pointLightPositions); ++i) {
-		LightCube* cube = new LightCube(lightColor[i]);
+		lightCubes.emplace_back(LightCube(lightColor[i]));
 
-		cube->setPosition(pointLightPositions[i]);
-		cube->setScale(glm::vec3(0.2f, 0.2f, 0.2f));
+		Object& cube = lightCubes.back();
 
-		lightCubes.push_back(cube);
+		cube.setPosition(pointLightPositions[i]);
+		cube.setScale(glm::vec3(0.2f, 0.2f, 0.2f));
 	}
 
-	std::vector<Model*> models;
+	std::vector<Model> models;
 
 	{
-		Model* backbag = new Model("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Models\\BackBag\\backpack.obj");
+		models.emplace_back("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Models\\BackBag\\backpack.obj");
+		Model& backbag = models.back();
 
-		backbag->position = glm::vec3(-1, 0.5, -3.5);
-		backbag->scale = glm::vec3(0.2f, 0.2f, 0.2f);
-		backbag->shininess = 32.0f;
-
-		models.push_back(backbag);
+		backbag.position = glm::vec3(-1, 0.5, -3.5);
+		backbag.scale = glm::vec3(0.2f, 0.2f, 0.2f);
+		backbag.shininess = 32.0f;
 	}
 
 	{
-		Model* table = new Model("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Models\\Table\\source\\SIMPLE ROUND TABLE.obj");
+		models.emplace_back("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Models\\Table\\source\\SIMPLE ROUND TABLE.obj");
+		Model& table = models.back();
 
-		table->position = glm::vec3(0.0f, 0.0f, -1.5f);
-		table->shininess = 16.0f;
+		table.position = glm::vec3(0.0f, 0.0f, -1.5f);
+		table.shininess = 16.0f;
 
 		models.push_back(table);
 	}
 
-	glm::mat4 view = camera->GetViewMatrix();
+	glm::mat4 view = camera.GetViewMatrix();
 	glm::vec3 lightDir = glm::vec3(-0.2f, -1.0f, -0.3f);
 	glm::vec3 colorDir = glm::vec3(1.0f);
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	GUI gui(window);
-
-	gui.cubes = &containers;
-	gui.lightingCubes = &lightCubes;
-
-	gui.plants = &plants;
-	gui.windows = &windows;
-
-	gui.models = &models;
+	GUI gui(window, containers, transparent, models, lightCubes);
 
 	gui.lightdirection = &lightDir.x;
 	gui.dirColor = &colorDir.x;
@@ -273,23 +258,24 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		lightingShader.use();
-		lightingShader.setVec3("viewPos", camera->Position);
+		lightingShader.setVec3("viewPos", camera.Position);
 
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) lightingShader.setBool("spot", true);
 		else lightingShader.setBool("spot", false);
 
 		// point lights
 		for (int i = 0; i < lightCubes.size(); ++i) {
+			const Object& cube = lightCubes[i];
 			std::string name = "pointLights[" + std::to_string(i) + "]";
 
-			lightingShader.setVec3(name + ".position", lightCubes[i]->getPosition());
+			lightingShader.setVec3(name + ".position", cube.position);
 			lightingShader.setVec3(name + ".ambient", 0.05f, 0.05f, 0.05f);
 			lightingShader.setVec3(name + ".diffuse", 0.8f, 0.8f, 0.8f);
 			lightingShader.setVec3(name + ".specular", 1.0f, 1.0f, 1.0f);
 			lightingShader.setFloat(name + ".constant", 1.0f);
 			lightingShader.setFloat(name + ".linear", 0.09f);
 			lightingShader.setFloat(name + ".quadratic", 0.032f);
-			lightingShader.setVec3(name + ".color", lightCubes[i]->color);
+			lightingShader.setVec3(name + ".color", cube.color);
 		}
 
 		// Directional
@@ -312,22 +298,22 @@ int main() {
 			lightingShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
 			lightingShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 			lightingShader.setVec3("spotLight.color", lightColor[0]);
-			lightingShader.setVec3("spotLight.position", camera->Position);
-			lightingShader.setVec3("spotLight.direction", camera->Front);
+			lightingShader.setVec3("spotLight.position", camera.Position);
+			lightingShader.setVec3("spotLight.direction", camera.Front);
 		}
 
 		cameraUpdate(window, view);
 
-		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
 		lightingShader.setMat4("view", view);
 		lightingShader.setMat4("projection", projection);
 
-		containers.draw(&lightingShader);
+		containers.draw(lightingShader);
 
 		glFrontFace(GL_CCW);
-		for (Model* model : models) {
-			model->draw(&lightingShader);
+		for (Model& model : models) {
+			model.draw(&lightingShader);
 		}
 		glFrontFace(GL_CW);
 
@@ -336,13 +322,13 @@ int main() {
 		lightCube.setMat4("view", view);
 		lightCube.setMat4("projection", projection);
 
-		lightCubes.draw(&lightCube);
+		lightCubes.draw(lightCube);
 
 		std::map<float, Transparent*> sorted;
-		for (unsigned int i = 0; i < transparent.size(); i++)
+		for (Transparent* temp : transparent)
 		{
-			float distance = glm::length(camera->Position - transparent[i]->position);
-			sorted[distance] = transparent[i];
+			float distance = glm::length(camera.Position - temp->position);
+			sorted[distance] = temp;
 		}
 
 		transparentShader.use();
@@ -352,7 +338,7 @@ int main() {
 
 		glDisable(GL_CULL_FACE);
 		for (std::map<float, Transparent*>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it) {
-			it->second->draw(&transparentShader);
+			it->second->draw(transparentShader);
 		}
 		glEnable(GL_CULL_FACE);
 
@@ -361,6 +347,7 @@ int main() {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
 	glDeleteVertexArrays(1, &cubeVAO);
 	glDeleteBuffers(1, &cubeVBO);
 

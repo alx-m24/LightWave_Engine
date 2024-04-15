@@ -26,7 +26,7 @@ public:
 	Object(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale) : position(position), rotation(rotation), scale(scale) {};
 	Object(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, float shininess) : position(position), rotation(rotation), scale(scale), shininess(shininess) {};
 
-	void update(Shader* shader);
+	void update(Shader& shader);
 
 public:
 	void setPosition(glm::vec3 pos);
@@ -37,7 +37,7 @@ public:
 	glm::vec3 getScale();
 };
 
-class Objects : public std::vector<Object*> {
+class Objects : public std::vector<Object> {
 private:
 	unsigned int VAO;
 	unsigned int diffuse, specular;
@@ -45,10 +45,9 @@ private:
 
 public:
 	Objects(unsigned int VAO, unsigned int vertexCount, unsigned int diffuse, unsigned int specular);
-	~Objects();
 
 public:
-	void draw(Shader* shader);
+	void draw(Shader& shader);
 };
 
 class LightCube : public Object {
@@ -74,7 +73,7 @@ public:
 	Transparent(unsigned int VAO, unsigned int vertexCount, unsigned int diffuse, unsigned int specular) : VAO(VAO), vertexCount(vertexCount), diffuse(diffuse), specular(specular) {};
 
 public:
-	void draw(Shader* shader);
+	void draw(Shader& shader);
 };
 
 #endif // !CUBE_HPP

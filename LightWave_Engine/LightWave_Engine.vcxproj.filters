@@ -139,4 +139,7 @@
       <Filter>Resource Files\Textures</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Notes.txt" />
+  </ItemGroup>
 </Project>

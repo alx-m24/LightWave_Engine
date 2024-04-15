@@ -5,7 +5,7 @@
 #include <iostream>
 #include "Camera/Camera.hpp"
 
-extern Camera* camera;
+extern Camera camera;
 extern unsigned int SCR_WIDTH;
 extern unsigned int SCR_HEIGHT;
 extern float dt;

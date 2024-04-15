@@ -4,10 +4,10 @@ void GUI::objectsWindow()
 {
 	ImGui::Begin("Objects", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoMove);
 
-	std::string name = "Cubes: " + std::to_string(cubes->size());
+	std::string name = "Cubes: " + std::to_string(cubes.size());
 	if (ImGui::CollapsingHeader(name.c_str())) {
 		unsigned int i = 1;
-		for (Object* cube : *cubes) {
+		for (Object& cube : cubes) {
 			name = "Cube" + std::to_string(i);
 
 			ImGui::SeparatorText(name.c_str());
@@ -16,11 +16,11 @@ void GUI::objectsWindow()
 
 			ImGui::BeginGroup();
 
-			ImGui::DragFloat3("Position", &cube->position.x, 0.01f);
-			ImGui::DragFloat3("Rotation", &cube->rotation.x, 0.01f);
-			ImGui::DragFloat3("Scale", &cube->scale.x, 0.01f);
+			ImGui::DragFloat3("Position", &cube.position.x, 0.01f);
+			ImGui::DragFloat3("Rotation", &cube.rotation.x, 0.01f);
+			ImGui::DragFloat3("Scale", &cube.scale.x, 0.01f);
 
-			ImGui::DragFloat("Shininess", &cube->shininess, 1.0f, 1.0f, 1024.0f);
+			ImGui::DragFloat("Shininess", &cube.shininess, 1.0f, 1.0f, 1024.0f);
 
 			ImGui::EndGroup();
 			ImGui::EndChild();
@@ -28,11 +28,11 @@ void GUI::objectsWindow()
 		}
 	}
 
-	name = "Plants: " + std::to_string(plants->size());
+	name = "Transparent Objects: " + std::to_string(transparent.size());
 	if (ImGui::CollapsingHeader(name.c_str())) {
 		unsigned int i = 1;
-		for (Object* plant : *plants) {
-			name = "Plant" + std::to_string(i);
+		for (Transparent* transparentObj : transparent) {
+			name = "Transparent" + std::to_string(i);
 
 			ImGui::SeparatorText(name.c_str());
 
@@ -40,35 +40,11 @@ void GUI::objectsWindow()
 
 			ImGui::BeginGroup();
 
-			ImGui::DragFloat3("Position", &plant->position.x, 0.01f);
-			ImGui::DragFloat3("Rotation", &plant->rotation.x, 0.01f);
-			ImGui::DragFloat3("Scale", &plant->scale.x, 0.01f);
+			ImGui::DragFloat3("Position", &transparentObj->position.x, 0.01f);
+			ImGui::DragFloat3("Rotation", &transparentObj->rotation.x, 0.01f);
+			ImGui::DragFloat3("Scale", &transparentObj->scale.x, 0.01f);
 
-			ImGui::DragFloat("Shininess", &plant->shininess, 1.0f, 1.0f, 1024.0f);
-
-			ImGui::EndGroup();
-			ImGui::EndChild();
-			++i;
-		}
-	}
-
-	name = "Windows: " + std::to_string(windows->size());
-	if (ImGui::CollapsingHeader(name.c_str())) {
-		unsigned int i = 1;
-		for (Object* window : *windows) {
-			name = "Window" + std::to_string(i);
-
-			ImGui::SeparatorText(name.c_str());
-
-			ImGui::BeginChild(name.c_str(), ImVec2(200, 90), ImGuiChildFlags_::ImGuiChildFlags_None, ImGuiWindowFlags_::ImGuiWindowFlags_None);
-
-			ImGui::BeginGroup();
-
-			ImGui::DragFloat3("Position", &window->position.x, 0.01f);
-			ImGui::DragFloat3("Rotation", &window->rotation.x, 0.01f);
-			ImGui::DragFloat3("Scale", &window->scale.x, 0.01f);
-
-			ImGui::DragFloat("Shininess", &window->shininess, 1.0f, 1.0f, 1024.0f);
+			ImGui::DragFloat("Shininess", &transparentObj->shininess, 1.0f, 1.0f, 1024.0f);
 
 			ImGui::EndGroup();
 			ImGui::EndChild();
@@ -76,10 +52,10 @@ void GUI::objectsWindow()
 		}
 	}
 
-	name = "Models: " + std::to_string(models->size());
+	name = "Models: " + std::to_string(models.size());
 	if (ImGui::CollapsingHeader(name.c_str())) {
 		unsigned int i = 1;
-		for (Model* model : *models) {
+		for (Model& model : models) {
 			name = "Model" + std::to_string(i);
 
 			ImGui::SeparatorText(name.c_str());
@@ -88,11 +64,11 @@ void GUI::objectsWindow()
 
 			ImGui::BeginGroup();
 
-			ImGui::DragFloat3("Position", &model->position.x, 0.01f);
-			ImGui::DragFloat3("Rotation", &model->rotation.x, 0.01f);
-			ImGui::DragFloat3("Scale", &model->scale.x, 0.01f);
+			ImGui::DragFloat3("Position", &model.position.x, 0.01f);
+			ImGui::DragFloat3("Rotation", &model.rotation.x, 0.01f);
+			ImGui::DragFloat3("Scale", &model.scale.x, 0.01f);
 
-			ImGui::DragFloat("Shininess", &model->shininess, 1.0f, 1.0f, 1024.0f);
+			ImGui::DragFloat("Shininess", &model.shininess, 1.0f, 1.0f, 1024.0f);
 
 			ImGui::EndGroup();
 			ImGui::EndChild();
@@ -140,10 +116,10 @@ void GUI::lightingOptions()
 	ImGui::EndGroup();
 	ImGui::EndChild();
 
-	std::string name = "PointLights: " + std::to_string(lightingCubes->size());
+	std::string name = "PointLights: " + std::to_string(lightingCubes.size());
 	if (ImGui::CollapsingHeader(name.c_str())) {
 		unsigned int i = 1;
-		for (Object* cube : *lightingCubes) {
+		for (Object& cube : lightingCubes) {
 			name = "LighingCube" + std::to_string(i);
 
 			ImGui::SeparatorText(name.c_str());
@@ -152,9 +128,9 @@ void GUI::lightingOptions()
 
 			ImGui::BeginGroup();
 
-			ImGui::DragFloat3("Position", &cube->position.x, 0.01f);
-			ImGui::DragFloat3("Scale", &cube->scale.x, 0.01f);
-			ImGui::ColorEdit3("Color", &cube->color.x, 0.01f);
+			ImGui::DragFloat3("Position", &cube.position.x, 0.01f);
+			ImGui::DragFloat3("Scale", &cube.scale.x, 0.01f);
+			ImGui::ColorEdit3("Color", &cube.color.x, 0.01f);
 
 			ImGui::EndGroup();
 			ImGui::EndChild();
@@ -169,20 +145,20 @@ void GUI::cameraOptions()
 
 	ImGui::BeginGroup();
 
-	ImGui::DragFloat3("Position", &camera->Position.x, 0.01f);
+	ImGui::DragFloat3("Position", &camera.Position.x, 0.01f);
 
-	ImGui::DragFloat3("Rotation", &camera->Front.x, 0.01f);
-	if (camera->Front.y < -1.0f) camera->Front.y = -1.0f;
-	if (camera->Front.y > 1.0f) camera->Front.y = 1.0f;
+	ImGui::DragFloat3("Rotation", &camera.Front.x, 0.01f);
+	if (camera.Front.y < -1.0f) camera.Front.y = -1.0f;
+	if (camera.Front.y > 1.0f) camera.Front.y = 1.0f;
 
-	ImGui::DragFloat("Speed", &camera->MovementSpeed, 0.01f, 0.5f, 50.0f);
-	ImGui::SliderFloat("Sensitivity", &camera->MouseSensitivity, 0.0001f, 1.0f);
-	ImGui::SliderFloat("FOV", &camera->Zoom, 1.0f, 180.0f);
+	ImGui::DragFloat("Speed", &camera.MovementSpeed, 0.01f, 0.5f, 50.0f);
+	ImGui::SliderFloat("Sensitivity", &camera.MouseSensitivity, 0.0001f, 1.0f);
+	ImGui::SliderFloat("FOV", &camera.Zoom, 1.0f, 180.0f);
 
 	if (ImGui::Button("Reset")) {
-		camera->Zoom = 45.0f;
-		camera->MouseSensitivity = 0.2f;
-		camera->MovementSpeed = 2.5f;
+		camera.Zoom = 45.0f;
+		camera.MouseSensitivity = 0.2f;
+		camera.MovementSpeed = 2.5f;
 	}
 
 	ImGui::EndGroup();
@@ -211,14 +187,14 @@ void GUI::cameraLocked()
 	ImGui::End();
 }
 
-GUI::GUI(GLFWwindow* window)
+GUI::GUI(GLFWwindow* window, Objects& cubes, std::vector<Transparent*>& transparent, std::vector<Model>& models, LighCubes& lightingCubes) : cubes(cubes), transparent(transparent), models(models), lightingCubes(lightingCubes)
 {
 	io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
-	ImGui::StyleColorsDark(); 
- 
+	ImGui::StyleColorsDark();
+
 
 	// Setup Platform/Renderer backends
 	ImGui_ImplGlfw_InitForOpenGL(window, true);

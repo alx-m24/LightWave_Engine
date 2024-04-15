@@ -29,7 +29,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
 	if (!camMove) return;
 
-	camera->rotate(xoffset, yoffset);
+	camera.rotate(xoffset, yoffset);
 }
 
 GLFWwindow* setup()
@@ -71,7 +71,7 @@ GLFWwindow* setup()
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	if (!camMove) return;
-	camera->zoom(static_cast<float>(yoffset));
+	camera.zoom(static_cast<float>(yoffset));
 }
 
 void processInput(GLFWwindow* window)
@@ -87,40 +87,40 @@ void processInput(GLFWwindow* window)
 
 	if (!camMove) return;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera->move(Camera::FORWARD, dt);
+		camera.move(Camera::FORWARD, dt);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera->move(Camera::BACKWARD, dt);
+		camera.move(Camera::BACKWARD, dt);
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera->move(Camera::LEFT, dt);
+		camera.move(Camera::LEFT, dt);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera->move(Camera::RIGHT, dt);
+		camera.move(Camera::RIGHT, dt);
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-		camera->move(Camera::FORWARD, dt);
+		camera.move(Camera::FORWARD, dt);
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		camera->move(Camera::BACKWARD, dt);
+		camera.move(Camera::BACKWARD, dt);
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		camera->move(Camera::LEFT, dt);
+		camera.move(Camera::LEFT, dt);
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		camera->move(Camera::RIGHT, dt);
+		camera.move(Camera::RIGHT, dt);
 }
 
 void cameraUpdate(GLFWwindow* window, glm::mat4& view) {
 	if (camMove && !lastCamMove) {
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-		float pitch = std::asin(camera->Front.y);
-		float yaw = std::atan2(camera->Front.z, camera->Front.x);
+		float pitch = std::asin(camera.Front.y);
+		float yaw = std::atan2(camera.Front.z, camera.Front.x);
 
-		camera->Pitch = glm::degrees(pitch);
-		camera->Yaw = glm::degrees(yaw);
+		camera.Pitch = glm::degrees(pitch);
+		camera.Yaw = glm::degrees(yaw);
 	}
 	if (!camMove && lastCamMove) {
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		glfwSetCursorPos(window, SCR_WIDTH / 2.0, SCR_HEIGHT / 2);
 	}
 
-	view = camera->GetViewMatrix();
+	view = camera.GetViewMatrix();
 
 	lastCamMove = camMove;
 }
