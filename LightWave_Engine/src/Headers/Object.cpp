@@ -94,3 +94,21 @@ void Transparent::draw(Shader& shader)
 	glDrawArrays(GL_TRIANGLES, 0, vertexCount);
 	glBindVertexArray(0);
 }
+
+void Transparents::draw(Shader& shader)
+{
+	std::map<float, Transparent*> sorted;
+	for (Transparent* temp : *this)
+	{
+		float distance = glm::length(camera.Position - temp->position);
+		sorted[distance] = temp;
+	}
+
+	shader.use();
+
+	glDisable(GL_CULL_FACE);
+	for (std::map<float, Transparent*>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it) {
+		it->second->draw(shader);
+	}
+	glEnable(GL_CULL_FACE);
+}

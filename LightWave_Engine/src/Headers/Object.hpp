@@ -5,7 +5,9 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <vector>
+#include <map>
 #include "Shaders/Shader.hpp"
+#include "Useful.hpp"
 
 class Object {
 public:
@@ -72,6 +74,11 @@ public:
 public:
 	Transparent(unsigned int VAO, unsigned int vertexCount, unsigned int diffuse, unsigned int specular) : VAO(VAO), vertexCount(vertexCount), diffuse(diffuse), specular(specular) {};
 
+public:
+	void draw(Shader& shader);
+};
+
+class Transparents : public std::vector<Transparent*> {
 public:
 	void draw(Shader& shader);
 };

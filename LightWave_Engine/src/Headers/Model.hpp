@@ -21,7 +21,7 @@ public:
 	glm::vec3 rotation = glm::vec3(0.0f);
 	glm::vec3 scale = glm::vec3(1.0f);
 	glm::mat4 model = glm::mat4(1.0f);
-	void draw(Shader* shader);
+	void draw(Shader& shader);
 
 private:
 	std::vector<Texture> textures_loaded;
@@ -34,6 +34,11 @@ private:
 	
 	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
 	std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
+};
+
+class Models : public std::vector<Model> {
+public:
+	void draw(Shader& shader);
 };
 
 #endif // !MODEL_H

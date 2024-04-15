@@ -9,7 +9,6 @@ extern Camera camera;
 extern unsigned int SCR_WIDTH;
 extern unsigned int SCR_HEIGHT;
 extern float dt;
-
 extern double lastX;
 extern double lastY;
 extern bool firstMouse;

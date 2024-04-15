@@ -20,7 +20,7 @@ public:
 
 public:
 	// Don't forget to activate/use shader first
-	void draw(Shader* shader);
+	void draw(Shader& shader);
 		
 private:
 	unsigned int VAO, VBO, EBO;

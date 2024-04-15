@@ -18,6 +18,11 @@
 #include "Headers/gui.hpp"
 #include "Headers/Useful.hpp"
 
+// Paths
+const std::string SHADER_PATH = "C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Shaders\\";
+const std::string TEXURE_PATH = "C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Textures\\";
+const std::string MODEL_PATH = "C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Models\\";
+
 // settings
 unsigned int SCR_WIDTH = 1000;
 unsigned int SCR_HEIGHT = 600;
@@ -45,16 +50,17 @@ int main() {
 	GLFWwindow* window = setup();
 
 	// Shaders
-	Shader lightCube("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Shaders\\lightCube.vert", "C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Shaders\\lightCube.frag");
-	Shader lightingShader("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Shaders\\LightEnvironment.vert", "C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Shaders\\LightEnvironment.frag");
-	Shader transparentShader("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Shaders\\transparent.vert", "C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Shaders\\transparent.frag");
+	Shader lightCube(SHADER_PATH + "lightCube.vert", SHADER_PATH + "lightCube.frag");
+	Shader lightingShader(SHADER_PATH + "LightEnvironment.vert", SHADER_PATH + "LightEnvironment.frag");
+	Shader transparentShader(SHADER_PATH + "transparent.vert", SHADER_PATH + "transparent.frag");
 
 	// Textures
-	unsigned int containerDiffuse = loadTexture("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Textures\\container2.png");
-	unsigned int containerSpecular = loadTexture("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Textures\\container2_specular.png");
-	unsigned int grass = loadTexture("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Textures\\grass.png");
-	unsigned int windowTex = loadTexture("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Textures\\blending_transparent_window.png");
+	unsigned int containerDiffuse = loadTexture(std::string(TEXURE_PATH + "container2.png").c_str());
+	unsigned int containerSpecular = loadTexture(std::string(TEXURE_PATH + "container2_specular.png").c_str());
+	unsigned int grass = loadTexture(std::string(TEXURE_PATH + "grass.png").c_str());
+	unsigned int windowTex = loadTexture(std::string(TEXURE_PATH + "blending_transparent_window.png").c_str());
 
+	// Vertices for a cube
 	float CubeVertices[] = {
 		// Position				// Normal				// TexCoords
 			// Back face
@@ -100,6 +106,7 @@ int main() {
 		 -0.5f,  0.5f,  0.5f,	0.0f,  1.0f,  0.0f,  0.0f, 0.0f, // bottom-left
 		 -0.5f,  0.5f, -0.5f,	0.0f,  1.0f,  0.0f,  0.0f, 1.0f  // top-left
 	};
+	// Vertices for a 2d plane
 	float planeVertices[] = {
 		// positions         // texture Coords
 		0.0f,  0.5f,  0.0f,  1.0f,  1.0f,
@@ -111,6 +118,7 @@ int main() {
 		1.0f,  0.5f,  0.0f,  0.0f,  1.0f
 	};
 
+	// Positions
 	glm::vec3 containerPositions[] = {
 		glm::vec3(0.0f,  0.0f,  0.0f),
 		glm::vec3(2.0f,  5.0f, -15.0f),
@@ -129,16 +137,18 @@ int main() {
 		glm::vec3(-4.0f,  2.0f, -12.0f),
 		glm::vec3(0.0f,  0.0f, -3.0f)
 	};
+	glm::vec3 grassPos[]{
+		glm::vec3(-1.5f,  0.0f, -0.48f), glm::vec3(1.5f,  0.0f,  0.51f), glm::vec3(0.0f,  0.0f,  0.7f), glm::vec3(-0.3f,  0.0f, -2.3f), glm::vec3(0.5f,  0.0f, -0.6f)
+	};
+	// Color of point lights
 	glm::vec3 lightColor[] = {
 		glm::vec3(1.0f, 1.0f, 1.0f),
 		glm::vec3(1.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 0.0f, 1.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f)
 	};
-	glm::vec3 grassPos[]{
-		glm::vec3(-1.5f,  0.0f, -0.48f), glm::vec3(1.5f,  0.0f,  0.51f), glm::vec3(0.0f,  0.0f,  0.7f), glm::vec3(-0.3f,  0.0f, -2.3f), glm::vec3(0.5f,  0.0f, -0.6f)
-	};
 
+	// VAO and VBO for a cube
 	unsigned int cubeVAO, cubeVBO;
 
 	glGenVertexArrays(1, &cubeVAO);
@@ -149,23 +159,25 @@ int main() {
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(CubeVertices), CubeVertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // Position
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); // Normal
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // TexCoords
 	glEnableVertexAttribArray(2);
 
+	// VAO for the light cubes
 	unsigned int lightVAO;
 
 	glGenVertexArrays(1, &lightVAO);
 	glBindVertexArray(lightVAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, cubeVBO); // Same vertices as for the normal cubes
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // Only position
 	glEnableVertexAttribArray(0);
 
+	// VAO and VBO for 2d planes
 	unsigned int planeVAO, planeVBO;
 
 	glGenVertexArrays(1, &planeVAO);
@@ -176,30 +188,29 @@ int main() {
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0); // Position
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))); // TextCoords
 	glEnableVertexAttribArray(1);
 
-	std::vector<Transparent*> transparent;
-
+	// Semi and fully transparent objects
+	Transparents transparents;
 	for (int i = 0; i < 4; ++i) {
 		Transparent* temp = new Transparent(planeVAO, 6, grass, NULL);
 
 		temp->position = grassPos[i];
-		transparent.push_back(temp);
+		transparents.push_back(temp);
 	}
-
 	for (int i = 0; i < 4; ++i) {
 		Transparent* temp = new Transparent(planeVAO, 6, windowTex, windowTex);
 
 		temp->position = grassPos[i] + glm::vec3(rand() % 5, rand() % 5, rand() % 5);
-		transparent.push_back(temp);
+		transparents.push_back(temp);
 	}
 
 	Objects containers(cubeVAO, 36, containerDiffuse, containerSpecular);
 	for (int i = 0; i < std::size(containerPositions); ++i) {
-		containers.emplace_back(Object(containerPositions[i], glm::vec3(1.0f, 0.3f, 0.5f)* float(i * 20)));
+		containers.emplace_back(Object(containerPositions[i], glm::vec3(1.0f, 0.3f, 0.5f) * float(i * 20)));
 	}
 
 	LighCubes lightCubes(lightVAO);
@@ -212,53 +223,62 @@ int main() {
 		cube.setScale(glm::vec3(0.2f, 0.2f, 0.2f));
 	}
 
-	std::vector<Model> models;
+	// External 3d models
+	Models models;
 
-	{
-		models.emplace_back("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Models\\BackBag\\backpack.obj");
-		Model& backbag = models.back();
+	// BackBag model
+	models.emplace_back(MODEL_PATH + "BackBag\\backpack.obj");
 
-		backbag.position = glm::vec3(-1, 0.5, -3.5);
-		backbag.scale = glm::vec3(0.2f, 0.2f, 0.2f);
-		backbag.shininess = 32.0f;
-	}
+	Model& backbag = models.back();
+	backbag.position = glm::vec3(-1, 0.5, -3.5);
+	backbag.scale = glm::vec3(0.2f, 0.2f, 0.2f);
+	backbag.shininess = 32.0f;
 
-	{
-		models.emplace_back("C:\\Users\\alexa\\OneDrive\\Coding\\C++\\LightWave_Engine\\LightWave_Engine\\res\\Models\\Table\\source\\SIMPLE ROUND TABLE.obj");
-		Model& table = models.back();
+	// Table model
+	models.emplace_back(MODEL_PATH + "Table\\source\\SIMPLE ROUND TABLE.obj");
 
-		table.position = glm::vec3(0.0f, 0.0f, -1.5f);
-		table.shininess = 16.0f;
+	Model& table = models.back();
+	table.position = glm::vec3(0.0f, 0.0f, -1.5f);
+	table.shininess = 16.0f;
 
-		models.push_back(table);
-	}
-
+	// The view matrix
 	glm::mat4 view = camera.GetViewMatrix();
+	// Light colors
 	glm::vec3 lightDir = glm::vec3(-0.2f, -1.0f, -0.3f);
 	glm::vec3 colorDir = glm::vec3(1.0f);
 
+	// Initializing UI
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	GUI gui(window, containers, transparent, models, lightCubes);
+	GUI gui(window, containers, transparents, models, lightCubes);
 
+	// Passing required pointers in UI
 	gui.lightdirection = &lightDir.x;
 	gui.dirColor = &colorDir.x;
 
+	// Main loop
 	while (!glfwWindowShouldClose(window)) {
 		float time = glfwGetTime();
 		dt = time - lastFrame;
 		lastFrame = time;
 
+		// Processing inputs
 		processInput(window);
+
+		cameraUpdate(window, view);
+		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
 		// UI
 		gui.update();
 
+		// Clearing buffers
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		lightingShader.use();
 		lightingShader.setVec3("viewPos", camera.Position);
+		lightingShader.setMat4("view", view);
+		lightingShader.setMat4("projection", projection);
 
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) lightingShader.setBool("spot", true);
 		else lightingShader.setBool("spot", false);
@@ -302,46 +322,26 @@ int main() {
 			lightingShader.setVec3("spotLight.direction", camera.Front);
 		}
 
-		cameraUpdate(window, view);
-
-		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-
-		lightingShader.setMat4("view", view);
-		lightingShader.setMat4("projection", projection);
-
+		// Drawing containers
 		containers.draw(lightingShader);
-
-		glFrontFace(GL_CCW);
-		for (Model& model : models) {
-			model.draw(&lightingShader);
-		}
-		glFrontFace(GL_CW);
-
+		// Drawing models
+		models.draw(lightingShader);
+		
+		// Light Cubes
 		lightCube.use();
-
 		lightCube.setMat4("view", view);
 		lightCube.setMat4("projection", projection);
-
+		// Drawing lightcubes
 		lightCubes.draw(lightCube);
 
-		std::map<float, Transparent*> sorted;
-		for (Transparent* temp : transparent)
-		{
-			float distance = glm::length(camera.Position - temp->position);
-			sorted[distance] = temp;
-		}
-
+		// Transparent objects
 		transparentShader.use();
-
 		transparentShader.setMat4("view", view);
 		transparentShader.setMat4("projection", projection);
+		// Drawing transparent objects
+		transparents.draw(transparentShader);
 
-		glDisable(GL_CULL_FACE);
-		for (std::map<float, Transparent*>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it) {
-			it->second->draw(transparentShader);
-		}
-		glEnable(GL_CULL_FACE);
-
+		// Rendering UI on top of all other objects
 		gui.draw();
 
 		glfwSwapBuffers(window);

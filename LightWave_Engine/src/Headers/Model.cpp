@@ -5,7 +5,7 @@ Model::Model(std::string path)
 	this->loadModel(path);
 }
 
-void Model::draw(Shader* shader)
+void Model::draw(Shader& shader)
 {
     model = glm::mat4(1.0f);
     model = glm::translate(model, position);
@@ -15,8 +15,8 @@ void Model::draw(Shader* shader)
     }
     if (scale != glm::vec3(1.0f)) model = glm::scale(model, scale);
 
-    shader->setMat4("model", model);
-    shader->setFloat("material.shininess", shininess);
+    shader.setMat4("model", model);
+    shader.setFloat("material.shininess", shininess);
 
     for (unsigned int i = 0; i < meshes.size(); ++i) meshes[i].draw(shader);
 }
@@ -144,4 +144,13 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType 
         }
     }
     return textures;
+}
+
+void Models::draw(Shader& shader)
+{
+    glFrontFace(GL_CCW);
+    for (Model& model : *this) {
+        model.draw(shader);
+    }
+    glFrontFace(GL_CW);
 }
