@@ -59,6 +59,7 @@ public:
 		this->color = color;
 	};
 };
+
 class Transparent : public Object {
 public:
 	unsigned int VAO;
@@ -72,7 +73,7 @@ public:
 	void draw(Shader& shader);
 };
 
-class Transparents : public std::vector<Transparent*> {
+class Transparents : public std::vector<Transparent> {
 public:
 	void draw(Shader& shader);
 };

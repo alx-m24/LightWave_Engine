@@ -33,15 +33,15 @@ private:
 public:
 	Objects& cubes;
 	LightSystem& lightingSystem;
-	std::vector<Model>& models;
-	std::vector<Transparent*>& transparent;
+	Transparents& transparents;
+	Models& models;
 
 public:
-	GUI(GLFWwindow* window, 
-		Objects& cubes, 
-		std::vector<Transparent*>& transparent,
-		std::vector<Model>& models,
-		LightSystem& lightingSystem);
+	GUI(GLFWwindow* window,
+		Objects& cubes,
+		LightSystem& lightingSystem,
+		Transparents& transparents,
+		Models& models);
 
 public:
 	void update();

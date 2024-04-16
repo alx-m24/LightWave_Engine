@@ -98,10 +98,10 @@ void Transparent::draw(Shader& shader)
 void Transparents::draw(Shader& shader)
 {
 	std::map<float, Transparent*> sorted;
-	for (Transparent* temp : *this)
+	for (Transparent& temp : *this)
 	{
-		float distance = glm::length(camera.Position - temp->position);
-		sorted[distance] = temp;
+		float distance = glm::length(camera.Position - temp.position);
+		sorted[distance] = &temp;
 	}
 
 	shader.use();

@@ -197,16 +197,12 @@ int main() {
 	// Semi and fully transparent objects
 	Transparents transparents;
 	for (int i = 0; i < 4; ++i) {
-		Transparent* temp = new Transparent(planeVAO, 6, grass, NULL);
-
-		temp->position = grassPos[i];
-		transparents.push_back(temp);
+		transparents.emplace_back(Transparent(planeVAO, 6, grass, NULL));
+		transparents[i].position = grassPos[i];
 	}
 	for (int i = 0; i < 4; ++i) {
-		Transparent* temp = new Transparent(planeVAO, 6, windowTex, windowTex);
-
-		temp->position = grassPos[i] + glm::vec3(rand() % 5, rand() % 5, rand() % 5);
-		transparents.push_back(temp);
+		transparents.emplace_back(Transparent(planeVAO, 6, windowTex, NULL));
+		transparents[i + 4].position = grassPos[i] + glm::vec3(rand() % 5, rand() % 5, rand() % 5);
 	}
 
 	Objects containers(cubeVAO, 36, containerDiffuse, containerSpecular);
@@ -244,7 +240,7 @@ int main() {
 	// Initializing UI
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	GUI gui(window, containers, transparents, models, lightsystem);
+	GUI gui(window, containers, lightsystem, transparents, models);
 
 	// The view matrix
 	glm::mat4 view = camera.GetViewMatrix();

@@ -32,10 +32,10 @@ void GUI::objectsWindow()
 		}
 	}
 
-	name = "Transparent Objects: " + std::to_string(transparent.size());
+	name = "Transparent Objects: " + std::to_string(transparents.size());
 	if (ImGui::CollapsingHeader(name.c_str())) {
 		unsigned int i = 1;
-		for (Transparent* transparentObj : transparent) {
+		for (Transparent& transparentObj : transparents) {
 			name = "Transparent" + std::to_string(i);
 
 			ImGui::SeparatorText(name.c_str());
@@ -44,11 +44,11 @@ void GUI::objectsWindow()
 
 			ImGui::BeginGroup();
 
-			ImGui::DragFloat3("Position", &transparentObj->position.x, 0.01f);
-			ImGui::DragFloat3("Rotation", &transparentObj->rotation.x, 0.01f);
-			ImGui::DragFloat3("Scale", &transparentObj->scale.x, 0.01f);
+			ImGui::DragFloat3("Position", &transparentObj.position.x, 0.01f);
+			ImGui::DragFloat3("Rotation", &transparentObj.rotation.x, 0.01f);
+			ImGui::DragFloat3("Scale", &transparentObj.scale.x, 0.01f);
 
-			ImGui::DragFloat("Shininess", &transparentObj->shininess, 1.0f, 1.0f, 1024.0f);
+			ImGui::DragFloat("Shininess", &transparentObj.shininess, 1.0f, 1.0f, 1024.0f);
 
 			ImGui::EndGroup();
 			ImGui::EndChild();
@@ -128,7 +128,8 @@ void GUI::lightingOptions()
 		}
 
 		unsigned int i = 1;
-		for (DirectionalLight& light : lightingSystem.directionalLights) {
+		std::vector<DirectionalLight>& lights = lightingSystem.directionalLights;
+		for (DirectionalLight& light : lights) {
 			name = "Directional" + std::to_string(i);
 
 			ImGui::SeparatorText(name.c_str());
@@ -169,7 +170,8 @@ void GUI::lightingOptions()
 		}
 
 		unsigned int i = 1;
-		for (PointLight& light : lightingSystem.pointlights) {
+		std::vector<PointLight>& lights = lightingSystem.pointlights;
+		for (PointLight& light : lights) {
 			name = "PointLight" + std::to_string(i);
 
 			ImGui::SeparatorText(name.c_str());
@@ -214,7 +216,8 @@ void GUI::lightingOptions()
 		}
 
 		unsigned int i = 1;
-		for (SpotLight& light : lightingSystem.spotLights) {
+		std::vector<SpotLight>& lights = lightingSystem.spotLights;
+		for (SpotLight& light : lights) {
 			name = "SpotLight" + std::to_string(i);
 
 			ImGui::SeparatorText(name.c_str());
@@ -289,7 +292,8 @@ void GUI::cameraLocked()
 	ImGui::End();
 }
 
-GUI::GUI(GLFWwindow* window, Objects& cubes, std::vector<Transparent*>& transparent, std::vector<Model>& models, LightSystem& lightingSystem) : cubes(cubes), transparent(transparent), models(models), lightingSystem(lightingSystem)
+GUI::GUI(GLFWwindow* window, Objects& cubes, LightSystem& lightingSystem, Transparents& transparents, Models& models) : 
+	cubes(cubes), lightingSystem(lightingSystem), transparents(transparents), models(models)
 {
 	io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
